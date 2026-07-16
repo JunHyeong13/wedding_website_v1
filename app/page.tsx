@@ -233,7 +233,7 @@ export default function Home() {
     <section className="section venues" id="venues">
       <div className="venue-heading">
         <div className="title"><p>03 · 서울·경기 웨딩 공간</p><h2>지도에서 먼저 보고,<br/>우리 동선으로 좁혀요</h2></div>
-        <p>공공 공간과 한옥·공원형 후보를 모았어요. 지도에서 장소를 고르면 주소와 계약 전 확인 사항을 바로 볼 수 있습니다.</p>
+        <p>공공 공간부터 한옥·공원·호텔·컨벤션·하우스웨딩까지 100여 곳을 모았어요. 지역과 공간 유형으로 좁혀 우리에게 맞는 후보를 비교해 보세요.</p>
       </div>
       <NaverVenueMap />
     </section>
