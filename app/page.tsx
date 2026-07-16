@@ -20,6 +20,55 @@ const tasks = [
 ] as const;
 const won = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}만원`;
 
+type SavingsPlanProps = {
+  target: number;
+  currentFunds: number;
+  monthlySavings: number;
+  onCurrentFundsChange: (value: number) => void;
+  onMonthlySavingsChange: (value: number) => void;
+  weddingType: string;
+};
+
+function SavingsPlan({ target, currentFunds, monthlySavings, onCurrentFundsChange, onMonthlySavingsChange, weddingType }: SavingsPlanProps) {
+  const remaining = Math.max(0, target - currentFunds);
+  const months = remaining === 0 ? 0 : monthlySavings > 0 ? Math.ceil(remaining / monthlySavings) : null;
+  const progress = target > 0 ? Math.min(100, currentFunds / target * 100) : 100;
+  const period = months === null
+    ? "월 저축액을 입력해 주세요"
+    : months === 0
+      ? "이미 목표 예산을 마련했어요"
+      : `${Math.floor(months / 12) > 0 ? `${Math.floor(months / 12)}년 ` : ""}${months % 12 > 0 ? `${months % 12}개월` : ""}`.trim();
+  const targetMonth = useMemo(() => {
+    if (months === null || months === 0) return null;
+    const date = new Date();
+    date.setMonth(date.getMonth() + months);
+    return new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "long" }).format(date);
+  }, [months]);
+
+  const updateNumber = (value: string, setter: (value: number) => void) => {
+    const parsed = Number(value);
+    setter(Number.isFinite(parsed) ? Math.max(0, parsed) : 0);
+  };
+
+  return <div className="savings-plan">
+    <div className="savings-head">
+      <div><small>예산 달성 플래너</small><strong>{weddingType} 자금 준비 기간</strong></div>
+      <span>입력값은 두 계산기에 함께 반영돼요</span>
+    </div>
+    <div className="savings-fields">
+      <label><span>현재 마련한 금액</span><div><input type="number" min="0" step="10" inputMode="numeric" value={currentFunds} onChange={e => updateNumber(e.target.value, onCurrentFundsChange)} aria-label="현재 마련한 금액"/><b>만원</b></div></label>
+      <label><span>앞으로 매달 모을 금액</span><div><input type="number" min="0" step="10" inputMode="numeric" value={monthlySavings} onChange={e => updateNumber(e.target.value, onMonthlySavingsChange)} aria-label="매달 모을 금액"/><b>만원</b></div></label>
+    </div>
+    <div className="funding-progress" aria-label={`예산 준비율 ${Math.round(progress)}%`}><i style={{ width: `${progress}%` }}/></div>
+    <div className="savings-summary">
+      <div><small>더 필요한 금액</small><b>{won(remaining)}</b></div>
+      <div><small>예상 준비 기간</small><b>{period}</b>{months !== null && months > 0 && <em>총 {months.toLocaleString("ko-KR")}개월</em>}</div>
+      <div><small>목표 달성 예상</small><b>{targetMonth ?? (months === 0 ? "지금 바로 가능" : "계산 대기 중")}</b></div>
+    </div>
+    <p>이자·투자수익과 물가 변동은 반영하지 않은 단순 저축 기준이며, 실제 계약 전에는 예비비를 별도로 남겨두는 것이 좋아요.</p>
+  </div>;
+}
+
 const smallSpaces = {
   public: ["공공·커뮤니티 공간", 120],
   restaurant: ["레스토랑·한옥", 280],
@@ -40,7 +89,9 @@ const smallSteps = [
   ["D-7", "당일 운영표와 잔금 점검", "현장 담당자 한 명에게 업체 연락처와 시간표를 공유해요."],
 ] as const;
 
-function SmallWeddingSection() {
+type SharedSavingsProps = Pick<SavingsPlanProps, "currentFunds" | "monthlySavings" | "onCurrentFundsChange" | "onMonthlySavingsChange">;
+
+function SmallWeddingSection({ currentFunds, monthlySavings, onCurrentFundsChange, onMonthlySavingsChange }: SharedSavingsProps) {
   const [guests, setGuests] = useState(40);
   const [space, setSpace] = useState<keyof typeof smallSpaces>("restaurant");
   const [pack, setPack] = useState<keyof typeof smallPackages>("standard");
@@ -82,6 +133,7 @@ function SmallWeddingSection() {
         <div><small>현재 조건의 예상 준비비</small><h3>{won(estimate.total)}</h3><p>{smallSpaces[space][0]} · {smallPackages[pack][0]} · {guests}명</p></div>
         <dl>{Object.entries(estimate.parts).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{won(value)}</dd></div>)}</dl>
         <p className="estimate-note">신혼집·혼수·신혼여행 비용은 제외한 예식 중심 추정치예요.</p>
+        <SavingsPlan target={estimate.total} currentFunds={currentFunds} monthlySavings={monthlySavings} onCurrentFundsChange={onCurrentFundsChange} onMonthlySavingsChange={onMonthlySavingsChange} weddingType="스몰웨딩" />
       </div>
     </div>
 
@@ -107,6 +159,8 @@ export default function Home() {
   const [guests, setGuests] = useState(180);
   const [house, setHouse] = useState(false);
   const [done, setDone] = useState<string[]>([]);
+  const [currentFunds, setCurrentFunds] = useState(1500);
+  const [monthlySavings, setMonthlySavings] = useState(150);
 
   useEffect(() => {
     const timer = window.setTimeout(() => { try { setDone(JSON.parse(localStorage.getItem("wedding-tasks") || "[]")); } catch {} }, 0);
@@ -169,11 +223,12 @@ export default function Home() {
           <small>지금 조건의 예상 총예산</small><h3>{won(budget.total)}</h3><p>{regions[region][0]} · {styles[style][0]} · 하객 {guests}명</p>
           <div className="bars">{Object.entries(budget.parts).map(([k,v])=><div key={k}><span>{k}<b>{won(v)}</b></span><i><em style={{width:`${Math.max(4,v/budget.total*100)}%`}}/></i></div>)}</div>
           <aside><b>예비비 포함</b><p>부가세, 봉사료, 헬퍼비, 원본비, 추가 장식비는 계약 전에 따로 확인하세요.</p></aside>
+          <SavingsPlan target={budget.total} currentFunds={currentFunds} monthlySavings={monthlySavings} onCurrentFundsChange={setCurrentFunds} onMonthlySavingsChange={setMonthlySavings} weddingType="일반웨딩" />
         </div>
       </div>
     </section>
 
-    <SmallWeddingSection />
+    <SmallWeddingSection currentFunds={currentFunds} monthlySavings={monthlySavings} onCurrentFundsChange={setCurrentFunds} onMonthlySavingsChange={setMonthlySavings} />
 
     <section className="section venues" id="venues">
       <div className="venue-heading">
