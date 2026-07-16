@@ -27,7 +27,7 @@
 NEXT_PUBLIC_NAVER_MAP_CLIENT_ID=발급받은_CLIENT_ID
 ```
 
-Client Secret은 브라우저 코드나 저장소에 넣지 않습니다. Client ID가 비어 있어도 장소 목록은 작동하며 지도 영역에는 연결 안내가 표시됩니다.
+** Client ID가 비어 있어도 장소 목록은 작동하며 지도 영역에는 연결 안내가 표시됩니다. ** 
 
 ## 로컬 실행
 
