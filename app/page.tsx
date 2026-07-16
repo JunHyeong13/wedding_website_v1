@@ -183,14 +183,14 @@ export default function Home() {
 
   return <main>
     <header>
-      <a className="brand" href="#top"><i>우</i>우리결혼, 현실가이드</a>
+      <a className="brand" href="#top" aria-label="온결 홈으로 이동"><img src="/ongyeol-symbol.png" alt=""/><span className="brand-copy"><strong>온결</strong><small>우리의 결혼, 현실적인 가이드</small></span></a>
       <nav><a href="#budget">예산 계산기</a><a href="#small-wedding">스몰웨딩</a><a href="#venues">웨딩홀 지도</a><a href="#meeting">상견례 예절</a><a href="#checklist">체크리스트</a></nav>
       <a className="small-cta" href="#checklist">내 준비도 보기 ↗</a>
     </header>
 
     <section className="hero" id="top">
       <div className="hero-copy">
-        <p className="eyebrow">처음이라 더 현실적인 결혼 준비</p>
+        <div className="hero-brandline"><span>ONGYEOL · OUR WAY</span><strong>온전히 우리다운 결혼</strong></div>
         <h1>결혼 준비,<br/>막막함 대신<br/><em>숫자와 순서로</em></h1>
         <p className="lead">20대 후반부터 30대 중반 사회 초년생을 위해<br/>예산, 상견례 예절, 준비 순서를 한곳에 담았어요.</p>
         <div className="actions"><a className="primary" href="#budget">내 결혼 예산 계산하기 <b>→</b></a><a href="#meeting">상견례 예절 먼저 보기 ↓</a></div>
@@ -265,6 +265,6 @@ export default function Home() {
     </section>
 
     <section className="closing"><p>결혼은 평균에 맞추는 일이 아니라</p><h2>두 사람의 생활을<br/>함께 설계하는 일이니까.</h2><a href="#budget">우리 예산 다시 계산하기 ↑</a></section>
-    <footer><div><a className="brand" href="#top"><i>우</i>우리결혼, 현실가이드</a><p>처음 결혼을 준비하는 사회 초년생을 위한 현실적인 출발점</p></div><div><b>자료·서비스 기준</b><a href="https://www.price.go.kr/tprice/portal/wedding/areaStatistic.do" target="_blank">한국소비자원 참가격 결혼서비스 통계 ↗</a><a href="https://familyseoul.or.kr/node/25845" target="_blank">서울시 서울마이웨딩 안내 ↗</a><a href="https://navermaps.github.io/maps.js.ncp/docs/tutorial-2-Getting-Started.html" target="_blank">네이버 Maps JavaScript API ↗</a></div><small>예산 결과는 계획을 돕기 위한 참고용 추정치입니다. 장소 운영, 비용, 수용 인원은 수시로 달라질 수 있으므로 최종 계약 전 운영 기관의 최신 안내와 취소 규정을 확인하세요. · 데이터 확인 2026.07.16</small></footer>
+    <footer><div><a className="brand" href="#top" aria-label="온결 홈으로 이동"><img src="/ongyeol-symbol.png" alt=""/><span className="brand-copy"><strong>온결</strong><small>온전히 우리다운 결혼</small></span></a><p>처음 결혼을 준비하는 사회 초년생을 위한 현실적인 출발점</p></div><div><b>자료·서비스 기준</b><a href="https://www.price.go.kr/tprice/portal/wedding/areaStatistic.do" target="_blank">한국소비자원 참가격 결혼서비스 통계 ↗</a><a href="https://familyseoul.or.kr/node/25845" target="_blank">서울시 서울마이웨딩 안내 ↗</a><a href="https://navermaps.github.io/maps.js.ncp/docs/tutorial-2-Getting-Started.html" target="_blank">네이버 Maps JavaScript API ↗</a></div><small>예산 결과는 계획을 돕기 위한 참고용 추정치입니다. 장소 운영, 비용, 수용 인원은 수시로 달라질 수 있으므로 최종 계약 전 운영 기관의 최신 안내와 취소 규정을 확인하세요. · 데이터 확인 2026.07.16</small></footer>
   </main>;
 }
