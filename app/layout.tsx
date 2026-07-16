@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Starter Project",
-  description: "A clean starting point for building your site.",
+  title: "우리결혼, 현실가이드 | 결혼·스몰웨딩 준비",
+  description: "사회 초년생을 위한 현실적인 결혼 예산, 스몰웨딩 비용과 준비 단계, 상견례 예절, 서울·경기 웨딩 공간 지도.",
   other: {
     "codex-preview": "development",
   },
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
